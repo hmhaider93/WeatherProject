@@ -1,10 +1,24 @@
 const express = require('express');
 const https = require('https');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
+app.use(bodyParser.urlencoded({extended:true}));
+
 app.get('/', (req, res) => {
-    const url = "https://api.openweathermap.org/data/2.5/weather?q=Paris&APPID=2b774cb1b9bf6e8f9cafe319e1295a05&units=metric"
+
+    res.sendFile(__dirname + "/index.html");
+   
+    // res.send(result);
+});
+app.listen(port, () => {
+    console.log(`Example app listening on port port!`);
+});
+
+app.post('/', function(req,res){
+    const cityName = req.body.cityName
+    const url = "https://api.openweathermap.org/data/2.5/weather?q="+ cityName +"&APPID=2b774cb1b9bf6e8f9cafe319e1295a05&units=metric"
     var result;
     https.get(url,function(response){
         // result = console.log(response);
@@ -20,8 +34,5 @@ app.get('/', (req, res) => {
             res.send();
         });
     });
-    // res.send(result);
 });
-app.listen(port, () => {
-    console.log(`Example app listening on port port!`);
-});
+
